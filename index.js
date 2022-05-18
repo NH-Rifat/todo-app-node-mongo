@@ -34,6 +34,13 @@ async function run() {
       res.send(todos);
     });
 
+    app.post('/todo', async (req, res) => {
+      const newTodo = req.body;
+      const result = await todoCollection.insertOne(newTodo);
+
+      res.send(result);
+    });
+
   } finally {
   }
 }
