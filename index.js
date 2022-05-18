@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,12 +27,12 @@ async function run() {
     // console.log('database connected');
     const todoCollection = client.db('todo-app').collection('todos');
 
-    app.get('/todos', async (req, res) => {
-      const query = {};
-      const cursor = todoCollection.find(query);
-      const todos = await cursor.toArray();
-      res.send(todos);
-    });
+    // app.get('/todos', async (req, res) => {
+    //   const query = {};
+    //   const cursor = todoCollection.find(query);
+    //   const todos = await cursor.toArray();
+    //   res.send(todos);
+    // });
 
     app.post('/todo', async (req, res) => {
       const newTodo = req.body;
@@ -50,6 +50,16 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/todos', async (req, res) => {
+      const email = req.query.email;
+      console.log(email);
+      if (email) {
+        const query = { email: email };
+        const cursor = await todoCollection.find(query);
+        const items = await cursor.toArray();
+        res.send(items);
+      }
+    });
   } finally {
   }
 }
